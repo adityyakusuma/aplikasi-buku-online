@@ -1,4 +1,5 @@
 'use client';
+
 import { useState, useEffect, use } from 'react';
 import { supabase } from '@/lib/supabase';
 
@@ -22,7 +23,7 @@ export default function BookReader({ params }) {
         .order('page_number', { ascending: true });
       if (pageData) setPages(pageData);
     };
-    loadBookContent();
+    if (bookId) loadBookContent();
   }, [bookId]);
 
   if (!book || pages.length === 0) {
@@ -33,7 +34,6 @@ export default function BookReader({ params }) {
 
   return (
     <div className="min-h-screen bg-[#FDFBF7] font-serif text-slate-800 flex flex-col justify-between">
-      {/* Top Bar */}
       <header className="px-6 py-4 flex justify-between items-center border-b border-stone-200/60 font-sans">
         <a href="/read" className="text-xs font-medium text-stone-500 hover:text-stone-900">
           ← Katalog Buku
@@ -44,14 +44,12 @@ export default function BookReader({ params }) {
         </div>
       </header>
 
-      {/* Reader Content Area */}
       <main className="max-w-2xl mx-auto px-6 py-12 flex-1 flex flex-col justify-center">
         <div className="prose prose-stone lg:prose-lg leading-relaxed whitespace-pre-wrap text-justify">
           {currentPage?.content || <p className="italic text-stone-400 text-center">Halaman ini kosong.</p>}
         </div>
       </main>
 
-      {/* Navigation Footer */}
       <footer className="border-t border-stone-200/60 py-4 px-6 font-sans">
         <div className="max-w-2xl mx-auto flex justify-between items-center">
           <button

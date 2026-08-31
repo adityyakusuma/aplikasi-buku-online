@@ -1,4 +1,7 @@
 'use client';
+
+export const dynamic = 'force-dynamic';
+
 import { useState, useEffect } from 'react';
 import { supabase } from '@/lib/supabase';
 
@@ -133,27 +136,35 @@ export default function AdminDashboard() {
               )}
               <div className="flex-1 flex flex-col justify-between">
                 <div>
-                  <div className="flex justify-between items-start mb-1">
+                  <div className="flex justify-between items-start mb-2">
                     <h3 className="font-bold text-base leading-snug">{book.title}</h3>
-                    <button
-                      onClick={() => toggleStatus(book.id, book.status)}
-                      className={`text-[10px] px-2 py-0.5 rounded-full font-semibold uppercase ${
-                        book.status === 'published' ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700'
-                      }`}
-                    >
-                      {book.status}
-                    </button>
                   </div>
-                  <p className="text-gray-500 text-xs line-clamp-2 mb-2">{book.description || 'Tanpa deskripsi'}</p>
+                  <p className="text-gray-500 text-xs line-clamp-2 mb-3">{book.description || 'Tanpa deskripsi'}</p>
                 </div>
 
-                <div className="flex gap-2 pt-2 border-t border-gray-100 text-xs">
-                  <a href={`/editor/${book.id}`} className="bg-gray-100 hover:bg-gray-200 px-3 py-1.5 rounded-md font-medium text-gray-700">
-                    Edit Cerita
-                  </a>
-                  <button onClick={() => handleDeleteBook(book.id)} className="text-red-600 hover:bg-red-50 px-2 py-1.5 rounded-md font-medium">
-                    Hapus
-                  </button>
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs text-gray-400 font-medium">Status:</span>
+                    <button
+                      onClick={() => toggleStatus(book.id, book.status)}
+                      className={`text-xs px-3 py-1 rounded-md font-semibold transition ${
+                        book.status === 'published'
+                          ? 'bg-green-100 text-green-700 hover:bg-green-200'
+                          : 'bg-yellow-100 text-yellow-800 hover:bg-yellow-200'
+                      }`}
+                    >
+                      {book.status === 'published' ? 'PUBLISHED (Klik ke Draft)' : 'DRAFT (Klik untuk Publish)'}
+                    </button>
+                  </div>
+
+                  <div className="flex gap-2 pt-2 border-t border-gray-100 text-xs">
+                    <a href={`/editor/${book.id}`} className="flex-1 text-center bg-gray-900 text-white hover:bg-gray-800 px-3 py-1.5 rounded-md font-medium">
+                      ✏️ Edit Cerita
+                    </a>
+                    <button onClick={() => handleDeleteBook(book.id)} className="text-red-600 hover:bg-red-50 px-2 py-1.5 rounded-md font-medium">
+                      Hapus
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
